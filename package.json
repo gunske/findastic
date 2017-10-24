@@ -1,0 +1,39 @@
+{
+  "name": "findastic",
+  "version": "0.1.1",
+  "description": "Simple Multi-phrase Search in any text",
+  "main": "./lib/index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gunske/findastic.git"
+  },
+  "keywords": [
+    "search",
+    "find",
+    "search engine",
+    "elasticsearch",
+    "text",
+    "node",
+    "nodejs-modules",
+    "javascript",
+    "javascript-library"
+  ],
+  "author": "Gunnar Skeid <gunnar.skeid@gmail.com> (https://github.com/gunske/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gunske/findastic/issues"
+  },
+  "homepage": "https://github.com/gunske/findastic#readme",
+  "dependencies": {
+    "bluebird": "3.5.x",
+    "mocha": "4.0.x"
+  }
+}
