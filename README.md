@@ -1,4 +1,5 @@
 # Findastic
+[![Build Status](https://travis-ci.org/gunske/findastic.svg?branch=master)](https://travis-ci.org/gunske/findastic)
 
 Simple Multi-phrase Search in any text
 
