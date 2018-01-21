@@ -30,8 +30,8 @@
  * Findastic
  *
  * @file Speedy multi-phrase Search in text
- * @version 0.1.1
- * @copyright Copyright (c) 2017 Gunnar Skeid
+ * @version 0.1.2
+ * @copyright Copyright (c) 2018 Gunnar Skeid
  */
 'use strict';
 
@@ -102,7 +102,10 @@ var Findastic = (function () {
      */
     function _normalize(phrase) {
 
+        // Lower case it
         phrase = phrase.toLocaleLowerCase();
+
+        // Normalize special characters by using the characters in the charMap hash
         phrase = phrase.replace(/[,./!?àáâãāçćčèéêëēėęîïíīįìłñńňôòóōõřśšťûüùúūůÿýžżŻź]/g, function(ch) {
             return charMap[ch] || ch;
         });
@@ -113,11 +116,12 @@ var Findastic = (function () {
     /**
      * Search a text for phrases
      */
-    function _search(sentence, matchMultipleOrcb, cb) {
+    function _search(sentence, matchMultipleOrCb, cb) {
 
-        if (typeof matchMultipleOrcb === 'function') {
-            cb = matchMultipleOrcb;
-            matchMultipleOrcb = false;
+        // Handle optional parameters
+        if (typeof matchMultipleOrCb === 'function') {
+            cb = matchMultipleOrCb;
+            matchMultipleOrCb = false;
         }
 
         var wordIndex = null,
@@ -131,12 +135,14 @@ var Findastic = (function () {
         currentPosition = 0;
         originalPosition = 0;
 
+        // Inline, self calling function, that handle start of words
         (function helperStartWord() {
 
             originalPosition += currentPosition;
             searchString = searchString.substr(currentPosition);
             currentPosition = 0;
 
+            // Inline function to skip to next word
             function helperSkipToNextWord() {
 
                 // Loop to next periode / space etc
@@ -200,6 +206,9 @@ var Findastic = (function () {
 
                             // It's a match
                             var resultId = wordIndex[phrase];
+                            /*console.log("phrase.length");
+                            console.log(phrase.length);
+if (cacheReturnData) {console.log(cacheReturnData.phrase.length);}*/
 
                             if (!cacheReturnData || (phrase.length > cacheReturnData.phrase.length)) {
 
@@ -215,7 +224,7 @@ var Findastic = (function () {
 
                             }
 
-                            if (matchMultipleOrcb !== true) {
+                            if (matchMultipleOrCb !== true) {
 
                                 // We only want one match, so DONE
                                 cb(null, [cacheReturnData]);
@@ -233,7 +242,8 @@ var Findastic = (function () {
 
                     // Finished with word, so add cacheData to returnData
                     returnData.push(cacheReturnData);
-
+                    /*console.log("returnData");
+                    console.log(returnData);*/
                     // Skip the length of the phrase so we don't process "sub phrases"
                     // on multi word phrases
                     currentPosition += cacheReturnData.phrase.length;
@@ -263,7 +273,11 @@ var Findastic = (function () {
 
                 error = new Error("Parameter must be a string");
 
-                if (!cb) {reject(error);}
+                if (!cb) {
+                    reject(error);
+                    return;
+                }
+
                 return cb(error);
 
             }
@@ -272,12 +286,20 @@ var Findastic = (function () {
 
                 if (err) {
 
-                    if (!cb) {reject(err);}
+                    if (!cb) {
+                        reject(err);
+                        return;
+                    }
+
                     return callback(err);
 
                 } else {
 
-                    if (!cb) {resolve(result);}
+                    if (!cb) {
+                        resolve(result);
+                        return;
+                    }
+
                     return callback(null, result);
 
                 }
@@ -291,6 +313,18 @@ var Findastic = (function () {
     /**
      * -------------------  PUBLIC  -------------------
      */
+
+    /**
+     * Returns number of phrases to search for
+     *
+     * @function module:findastic.length
+     * @returns {number}     Number of phrases to search for
+     */
+    Object.defineProperty(api, 'length', {
+        get: function() {
+            return Object.keys(local.phrases).length;
+        }
+    });
 
     /**
      * Returns the full phrase and index data, used for dumping the index to file / db
@@ -395,7 +429,7 @@ var Findastic = (function () {
      */
     api.search = function(phrase, cb) {
 
-        _searchApi(phrase, true, cb);
+        return _searchApi(phrase, true, cb);
 
     };
 
@@ -409,7 +443,7 @@ var Findastic = (function () {
      */
     api.searchOne = function(phrase, cb) {
 
-        _searchApi(phrase, false, cb);
+        return _searchApi(phrase, false, cb);
 
     };
 
@@ -434,7 +468,7 @@ module.exports = Findastic;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 24 2017 17:40:41 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 21 2018 16:43:05 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
