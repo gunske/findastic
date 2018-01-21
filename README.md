@@ -83,8 +83,26 @@ fs.readFile("/tmp/findastic.txt", function(err, importData) {
 });
 ```
 
+### Working with promises
+
+Instead of callback, you can use promise for findastic.search:
+```
+findastic.search("hello").then(function(result) {
+   console.log("Found " + result.length + " hits");
+}, function (err) {
+   console.log("Error!");
+});
+```
+
+## Change log
+
+### v0.1.2
+* Support for promises for findastic.search()
+* Added findastic.length to get number of search phrases
+* Updated to Mocha v5.0.0
+
 ## License
 
 [The MIT License](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2017 Gunnar Skeid
+Copyright (c) 2018 Gunnar Skeid
