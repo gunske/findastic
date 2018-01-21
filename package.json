@@ -1,6 +1,6 @@
 {
   "name": "findastic",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple Multi-phrase Search in any text",
   "main": "./lib/index.js",
   "directories": {
@@ -33,6 +33,6 @@
   "homepage": "https://github.com/gunske/findastic#readme",
   "dependencies": {
     "bluebird": "3.5.x",
-    "mocha": "4.0.x"
+    "mocha": "5.0.x"
   }
 }
