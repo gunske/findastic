@@ -18,6 +18,14 @@ describe('findastic-lib', function() {
 
         });
 
+        it('length', function (done) {
+
+            var numberOfItems = findastic.length;
+            assert.equal(numberOfItems, 0);
+            done();
+
+        });
+
         it('search on empty index', function (done) {
 
             findastic.search("dette liker vi heisann på deg", function (err, result) {
@@ -164,6 +172,12 @@ describe('findastic-lib', function() {
 
         });
 
+        it('length', function (done) {
+            assert.equal(findastic.length, 6);
+            done();
+
+        });
+
         it('search wrong input (fail)', function (done) {
 
             findastic.search({hallo: "n"}, function(err, result) {
@@ -284,6 +298,78 @@ describe('findastic-lib', function() {
                 assert.equal(result[3].phrase, 'heisann');
                 assert.equal(result[3].position, 37);
                 assert.equal(result[3].data.a, 'h');
+                done();
+
+            });
+
+        });
+
+    });
+
+    describe('promise', function () {
+
+        it('init search', function (done) {
+
+            findastic.reset();
+            findastic.add("a", {a:'a'});
+            findastic.add("ab", {a:'b'});
+            findastic.add("abs", {a:'s'});
+            findastic.add("abs ab", {a:'s2'});
+            findastic.add("heisann", {a:'h'});
+            findastic.add("heida", {a:'e'});
+            findastic.add("GründeRe", {a:'g'});
+            done();
+
+        });
+
+        it('search', function (done) {
+
+            findastic.search("abs ab. ab").then(function(result) {
+
+                assert.notEqual(result, null);
+                assert.notEqual(result.length, 0);
+                assert.equal(result.length, 2);
+                assert.equal(result[0].phrase, 'abs ab');
+                assert.equal(result[0].position, 0);
+                assert.equal(result[0].data.a, 's2');
+                done();
+
+            }, function (err) {
+
+                done(err);
+
+            });
+
+        });
+
+        it('searchOne', function (done) {
+
+            findastic.searchOne("abs ab. ab").then(function(result) {
+
+                assert.notEqual(result, null);
+                assert.notEqual(result.length, 0);
+                assert.equal(result.length, 1);
+                assert.equal(result[0].phrase, 'abs');
+                assert.equal(result[0].position, 0);
+                assert.equal(result[0].data.a, 's');
+                done();
+
+            }, function (err) {
+
+                done(err);
+
+            });
+
+        });
+
+        it('search should fail', function (done) {
+
+            findastic.search([]).then(function(result) {
+
+                done(new Error("Should fail"));
+
+            }, function (err) {
+
                 done();
 
             });
